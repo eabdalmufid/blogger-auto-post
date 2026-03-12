@@ -1,0 +1,14 @@
+{
+  "name": "blogger-auto-post",
+  "version": "1.0.0",
+  "description": "Auto-generate blog content with Gemini AI and publish to Blogger via email, with built-in daily cron scheduler.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "generate": "node generate.js"
+  },
+  "dependencies": {
+    "node-cron": "^3.0.3",
+    "nodemailer": "^8.0.2"
+  }
+}

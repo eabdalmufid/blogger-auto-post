@@ -1,0 +1,40 @@
+name: Daily Blog Generator
+
+on:
+  schedule:
+    # Runs once per day at 07:00 UTC
+    - cron: "0 7 * * *"
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate and publish blog post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          BLOGGER_EMAIL: ${{ secrets.BLOGGER_EMAIL }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          BLOG_CATEGORIES: ${{ vars.BLOG_CATEGORIES }}
+          BLOG_WORDS: ${{ vars.BLOG_WORDS }}
+          BLOG_PROMPT: ${{ vars.BLOG_PROMPT }}
+        run: node generate.js
